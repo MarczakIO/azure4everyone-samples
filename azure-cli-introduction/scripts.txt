@@ -1,0 +1,28 @@
+# Batch
+az login
+
+az account
+
+az account set --subscription 
+
+az group --help
+
+az group list
+
+az group list -o json
+az group list -o jsonc
+az group list -o tsv 
+az group list -o table
+az group list -o yaml
+
+az group list --query "[].name"
+
+az group list --query "[].{alias:name}" -o table
+
+az group list --query "[]" (everything)
+
+az group list --query "[?location=='westeurope']"
+
+az interative
+
+az vm create --name myvm --resource-group  mygroup --image UbuntuLTS --generate-ssh-keys --admin-username amdemoadmin

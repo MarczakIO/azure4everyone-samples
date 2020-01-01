@@ -1,0 +1,7 @@
+{
+    "id": "1",
+    "category": "personal",
+    "name": "groceries",
+    "description": "Pick up apples and strawberries.",
+    "isComplete": false
+}

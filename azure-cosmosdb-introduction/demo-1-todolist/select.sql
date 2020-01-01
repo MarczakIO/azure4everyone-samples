@@ -1,0 +1,2 @@
+SELECT * FROM c
+ORDER BY c._ts DESC
