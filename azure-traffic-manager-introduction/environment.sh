@@ -1,4 +1,4 @@
-group=traffic-manager-demo3
+group=azure-traffic-manager-introduction
 az group create -g $group -l northeurope
 username=adminuser
 password='SecretPassword123!@#'

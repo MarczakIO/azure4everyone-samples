@@ -1,2 +1,2 @@
-group=traffic-manager-demo3
+group=azure-traffic-manager-introduction
 az group delete -g $group
