@@ -24,7 +24,7 @@ az appservice plan create \
   -n web-eastus2-plan \
   -g $group \
   -l eastus2 \
-  --sku B1
+  --sku S1
   
 appname=demo-web-eastus2-$RANDOM$RANDOM
 az webapp create \
@@ -36,7 +36,7 @@ az appservice plan create \
   -n web-northeurope-plan \
   -g $group \
   -l northeurope \
-  --sku B1
+  --sku S1
   
 appname=demo-web-northeurope-$RANDOM$RANDOM
 az webapp create \
