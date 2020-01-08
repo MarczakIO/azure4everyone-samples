@@ -29,7 +29,7 @@ do
     --subnet subnet \
     --public-ip-address "" \
     --availability-set vm-as \
-	--nsg vm-nsg
+	  --nsg vm-nsg
 done
 
 for NUM in 1 2 3
