@@ -6,7 +6,7 @@ $storageName = ""
 $account = Get-AzStorageAccount –Name $storageName -ResourceGroupName $group
 $ctx = $account.Context
 
-$tableName = "pshtesttable"
+$tableName = "users"
 New-AzStorageTable –Name $tableName –Context $ctx
 
 $cloudTable = (Get-AzStorageTable –Name $tableName –Context $ctx).CloudTable
