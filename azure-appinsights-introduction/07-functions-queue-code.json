@@ -1,0 +1,33 @@
+{
+  "bindings": [
+    {
+      "authLevel": "function",
+      "name": "req",
+      "type": "httpTrigger",
+      "direction": "in",
+      "methods": [
+        "get",
+        "post"
+      ]
+    },
+    {
+      "name": "$return",
+      "type": "http",
+      "direction": "out"
+    },
+    {
+      "type": "queue",
+      "name": "queueItem",
+      "queueName": "demoqueue",
+      "connection": "AzureWebJobsStorage",
+      "direction": "out"
+    },
+    {
+      "name": "blob",
+      "type": "blob",
+      "path": "democontainer/{rand-guid}.txt",
+      "connection": "AzureWebJobsStorage",
+      "direction": "out"
+    }
+  ]
+}

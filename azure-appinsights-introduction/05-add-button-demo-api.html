@@ -1,0 +1,22 @@
+<div class="alert alert-warning" role="alert">
+    Remember to disable ADBLOCK!
+</div>
+<div style="margin-bottom: 20px;">
+    <button id="button" class="btn btn-primary">Call Functions</button>
+</div>
+<div class="alert alert-primary" role="alert" id="message"style="display: none;"></div>
+<div class="alert alert-danger" role="alert" id="error"style="display: none;"></div>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<script>
+    var url = "/api/Demo";
+    $( "#button" ).click(function() {
+        $( "#message" ).text("Loading...");
+        $.get(url)
+            .done(function(data) {
+                $( "#message" ).text(data).show();
+            })
+            .fail(function(error) {
+                $( "#error" ).text(JSON.stringify(error)).show();
+            })
+    });
+</script>

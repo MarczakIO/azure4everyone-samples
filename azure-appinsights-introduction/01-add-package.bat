@@ -1,0 +1,1 @@
+dotnet add package Microsoft.ApplicationInsights.AspNetCore

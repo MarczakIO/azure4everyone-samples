@@ -1,0 +1,10 @@
+{
+    "ApplicationInsights": {
+        "InstrumentationKey": "<app_insights_instrumentation_key>"
+    },
+    "Logging": {
+        "LogLevel": {
+            "Default": "Warning"
+        }
+    }
+}
