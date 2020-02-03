@@ -13,7 +13,7 @@ public static async Task<IActionResult> Run(
 {
     log.LogInformation("C# HTTP trigger function processed a request.");
 
-    var message = "Hello Azure!"
+    var message = "Hello Azure!";
     await queueItem.AddAsync(message);
     StreamWriter sr = new StreamWriter(blob);
     await sr.WriteAsync(message);
