@@ -1,0 +1,14 @@
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+<style>
+    body {
+        background-color: @Configuration["TestApp:Settings:BackgroundColor"]
+    }
+    h1 {
+        color: @Configuration["TestApp:Settings:FontColor"];
+        font-size: @Configuration["TestApp:Settings:FontSize"];
+    }
+</style>
+
+<h1>@Configuration["TestApp:Settings:Message"]</h1>

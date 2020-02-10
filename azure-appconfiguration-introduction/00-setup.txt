@@ -1,0 +1,17 @@
+# Setup variable
+TestApp:Settings:Message
+Data from Azure App Configuration
+
+# Create project
+dotnet new console
+dotnet add package Microsoft.Extensions.Configuration.AzureAppConfiguration --version 3.0.0-preview-011100001-1152
+dotnet restore
+
+# Setup program.cs code
+
+# cli
+setx ConnectionString "connection-string-of-your-app-configuration-store"
+# powershell
+$Env:ConnectionString = "connection-string-of-your-app-configuration-store"
+# macOS/Linux
+export ConnectionString='connection-string-of-your-app-configuration-store'
