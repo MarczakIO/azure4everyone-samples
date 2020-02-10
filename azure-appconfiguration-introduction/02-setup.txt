@@ -13,6 +13,9 @@ dotnet new mvc
 dotnet add package Microsoft.Extensions.Configuration.AzureAppConfiguration --version 3.0.0-preview-011100001-1152
 dotnet restore
 
+# Add this line to .csproj code <propertyGroup>
+<UserSecretsId>79a3edd0-2092-40a2-a04d-dcb46d5ca9ed</UserSecretsId>
+
 # dotnet secrets
 dotnet user-secrets set ConnectionStrings:AppConfig 'connection_string'
 
