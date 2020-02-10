@@ -8,10 +8,10 @@ dotnet add package Microsoft.Extensions.Configuration.AzureAppConfiguration --ve
 dotnet restore
 
 # cli
-setx ConnectionString "connection-string-of-your-app-configuration-store"
+setx ConnectionString "connection-string"
 # powershell
-$Env:ConnectionString = "connection-string-of-your-app-configuration-store"
+$Env:ConnectionString = "connection-string"
 # macOS/Linux
-export ConnectionString='connection-string-of-your-app-configuration-store'
+export ConnectionString='connection-string'
 
 # Setup program.cs code
