@@ -13,7 +13,7 @@ dotnet new mvc
 dotnet add package Microsoft.Extensions.Configuration.AzureAppConfiguration --version 3.0.0-preview-011100001-1152
 dotnet restore
 
-# Setup program.cs code
-
 # dotnet secrets
 dotnet user-secrets set ConnectionStrings:AppConfig 'connection_string'
+
+# Setup program.cs code
