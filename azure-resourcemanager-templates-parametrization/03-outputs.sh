@@ -1,4 +1,4 @@
-group='<group_name>'
+group='arm-03'
 
 az group create -g $group -l northeurope
 
