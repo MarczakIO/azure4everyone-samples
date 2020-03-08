@@ -1,0 +1,38 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "planName": {
+            "type": "string"
+        },
+        "webAppName": {
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "name": "[parameters('planName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "S1"
+            }
+        },
+        {
+            "type":"Microsoft.Web/sites",
+            "apiVersion": "2018-02-01",
+            "name": "[parameters('webAppName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[parameters('planName')]"
+            ],
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('planName'))]"
+            }
+        }
+    ],
+    "outputs": {},
+    "functions": []
+}

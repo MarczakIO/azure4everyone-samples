@@ -1,0 +1,59 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "planName": {
+            "type": "string"
+        },
+        "webAppName": {
+            "type": "string"
+        },
+        "storageAccountName": {
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "name": "[parameters('planName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "S1"
+            }
+        },
+        {
+            "type":"Microsoft.Web/sites",
+            "apiVersion": "2018-02-01",
+            "name": "[parameters('webAppName')]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[parameters('planName')]",
+                "[parameters('storageAccountName')]"
+            ],
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('planName'))]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "storageConnectionString",
+                            "value": "[listKeys(parameters('storageAccountName'), '2019-06-01').keys[0].value]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "location": "[resourceGroup().location]",
+            "name": "[parameters('storageAccountName')]",
+            "sku": {
+                "name": "Standard_LRS"
+            }
+        }
+    ],
+    "outputs": {},
+    "functions": []
+}
