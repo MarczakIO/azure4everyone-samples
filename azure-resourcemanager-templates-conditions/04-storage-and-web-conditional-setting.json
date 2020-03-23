@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "allowAzureIPs": {
+            "type": "string",
+            "allowedValues": [
+                "Yes",
+                "No"
+            ]
+        },
+        "adminLogin": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "serverName": "[concat('sql-server-', uniqueString(resourceGroup().id))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "2015-05-01-preview",
+            "name": "[variables('serverName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "administratorLogin": "[parameters('adminLogin')]",
+                "administratorLoginPassword": "[parameters('adminPassword')]",
+                "version": "12.0"
+            },
+            "resources": [
+                {
+                    "condition": "[equals(parameters('allowAzureIPs'), 'Yes')]",
+                    "type": "firewallRules",
+                    "apiVersion": "2015-05-01-preview",
+                    "name": "AllowAllWindowsAzureIps",
+                    "location": "[resourceGroup().location]",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Sql/servers/', variables('serverName'))]"
+                    ],
+                    "properties": {
+                        "endIpAddress": "0.0.0.0",
+                        "startIpAddress": "0.0.0.0"
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {
+    },
+    "functions": [
+    ]
+}

@@ -1,0 +1,58 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccountName": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "storageAccountName": "[if(not(empty(parameters('storageAccountName'))), parameters('storageAccountName'), 'storage')]"
+    },
+    "resources": [
+        {
+            "condition": "[not(empty(parameters('storageAccountName')))]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "name": "[variables('storageAccountName')]",
+            "location": "[resourceGroup().location]",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Standard_LRS"
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "name": "[concat('appserviceplan-',uniqueString(resourceGroup().id))]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "S1"
+            }
+        },
+        {
+            "type":"Microsoft.Web/sites",
+            "apiVersion": "2018-02-01",
+            "name": "[concat('appservice-',uniqueString(resourceGroup().id))]",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', concat('appserviceplan-',uniqueString(resourceGroup().id)))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+            ],
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', concat('appserviceplan-',uniqueString(resourceGroup().id)))]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "storageAccessKey",
+                            "value": "[if(not(empty(parameters('storageAccountName'))),listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value,'')]"
+                        }
+                    ]
+                }
+            }
+        }
+    ],
+    "outputs": {},
+    "functions": []
+}
