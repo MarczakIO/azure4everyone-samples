@@ -1,0 +1,63 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+
+    },
+    "variables": {
+        "exampleVariable": "PARENT variable"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "name": "nestedTemplate",
+            "properties": {
+                "expressionEvaluationOptions": {
+                    "scope": "inner"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                    "parentVariable": {
+                        "value": "[variables('exampleVariable')]"
+                    }
+                },
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "parentVariable": {
+                            "type": "string"
+                        }
+                    },
+                    "variables": {
+                        "exampleVariable": "NESTED variable"
+                    },
+                    "resources": [
+
+                    ],
+                    "outputs": {
+                        "resultVarNested": {
+                            "type": "string",
+                            "value": "[variables('exampleVariable')]"
+                        },
+                        "resultVarParent": {
+                            "type": "string",
+                            "value": "[parameters('parentVariable')]"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "resultVarNested": {
+            "type": "string",
+            "value": "[reference('nestedTemplate').outputs.resultVarNested.value]"
+        },
+        "resultVarParent": {
+            "type": "string",
+            "value": "[reference('nestedTemplate').outputs.resultVarParent.value]"
+        }
+    }
+}
