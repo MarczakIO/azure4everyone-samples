@@ -46,7 +46,7 @@ url=$(az storage blob url \
 echo LINKED TEMPLATE URL: $url
 echo SAS TOKEN: $token
 
-az group deployment create \
+az deployment group create \
     -g $demo \
     --template-file 05-main.json \
     --query "properties.outputs" \
