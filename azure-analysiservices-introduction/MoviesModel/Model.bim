@@ -1,0 +1,90 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1500,
+  "model": {
+    "culture": "en-US",
+    "dataSources": [
+      {
+        "type": "structured",
+        "name": "AzureBlobs/https://amasdemostorage blob core windows net/",
+        "connectionDetails": {
+          "protocol": "azure-blobs",
+          "address": {
+            "account": "amasdemostorage",
+            "domain": "blob.core.windows.net"
+          },
+          "authentication": null,
+          "query": null
+        },
+        "options": {},
+        "credential": {
+          "AuthenticationKind": "Key"
+        }
+      }
+    ],
+    "tables": [
+      {
+        "name": "input",
+        "columns": [
+          {
+            "name": "movieId",
+            "dataType": "int64",
+            "sourceColumn": "movieId"
+          },
+          {
+            "name": "title",
+            "dataType": "string",
+            "sourceColumn": "title"
+          },
+          {
+            "name": "genre",
+            "dataType": "string",
+            "sourceColumn": "genre"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"AzureBlobs/https://amasdemostorage blob core windows net/\",",
+                "    input1 = Source{[Name=\"input\"]}[Data],",
+                "    #\"https://amasdemostorage blob core windows net/input/_movies csv\" = input1{[#\"Folder Path\"=\"https://amasdemostorage.blob.core.windows.net/input/\",Name=\"movies.csv\"]}[Content],",
+                "    #\"Imported CSV\" = Csv.Document(#\"https://amasdemostorage blob core windows net/input/_movies csv\",[Delimiter=\",\", Columns=3, Encoding=1252, QuoteStyle=QuoteStyle.None]),",
+                "    #\"Promoted Headers\" = Table.PromoteHeaders(#\"Imported CSV\", [PromoteAllScalars=true]),",
+                "    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"movieId\", Int64.Type}, {\"title\", type text}, {\"genres\", type text}}),",
+                "    #\"Split Column by Delimiter\" = Table.SplitColumn(#\"Changed Type\", \"genres\", Splitter.SplitTextByDelimiter(\"|\", QuoteStyle.Csv), {\"genres.1\", \"genres.2\", \"genres.3\", \"genres.4\", \"genres.5\", \"genres.6\"}),",
+                "    #\"Changed Type1\" = Table.TransformColumnTypes(#\"Split Column by Delimiter\",{{\"genres.1\", type text}, {\"genres.2\", type text}, {\"genres.3\", type text}, {\"genres.4\", type text}, {\"genres.5\", type text}, {\"genres.6\", type text}}),",
+                "    #\"Unpivoted Columns\" = Table.UnpivotOtherColumns(#\"Changed Type1\", {\"movieId\", \"title\"}, \"Attribute\", \"Value\"),",
+                "    #\"Removed Columns\" = Table.RemoveColumns(#\"Unpivoted Columns\",{\"Attribute\"}),",
+                "    #\"Renamed Columns\" = Table.RenameColumns(#\"Removed Columns\",{{\"Value\", \"genre\"}})",
+                "in",
+                "    #\"Renamed Columns\""
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Movie Count",
+            "expression": " DISTINCTCOUNT(input[movieId])+1"
+          },
+          {
+            "name": "Row Count",
+            "expression": " COUNTROWS(input)"
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "600"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}
