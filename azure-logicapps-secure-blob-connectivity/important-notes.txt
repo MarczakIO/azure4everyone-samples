@@ -1,0 +1,19 @@
+#audience
+
+https://storage.azure.com/
+
+#headers
+
+x-ms-date      formatDateTime(utcNow(),'R')
+x-ms-version   2019-07-07
+
+#prefix filter
+
+/blobServices/default/containers/demo
+
+#steps
+
+1. Add MSI
+2. Add Storage Blob Data Contributor
+3. Make HTTP call
+4. Add Allow Chunking for big files
