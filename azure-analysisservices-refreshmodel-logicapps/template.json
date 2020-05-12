@@ -1,0 +1,109 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "analysisServicesName": {
+            "type": "string",
+            "defaultValue": "[concat('refreshaas',uniqueString(resourceGroup().id))]"
+        },
+        "analysisServicesModelName": {
+            "type": "string",
+            "defaultValue": "demo"
+        },
+        "storageAccountName": {
+            "type": "string",
+            "defaultValue": "[concat('refreshaas',uniqueString(resourceGroup().id))]"
+        },
+        "logicAppName": {
+            "type": "string",
+            "defaultValue": "refresh-aas"
+        }
+    },
+    "functions": [
+    ],
+    "variables": {
+        "aasurl": "[concat('https://', resourceGroup().location, '.asazure.windows.net/', parameters('analysisServicesName'), '/myserver/models/', parameters('analysisServicesModelName'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.AnalysisServices/servers",
+            "apiVersion": "2017-08-01",
+            "location": "[resourceGroup().location]",
+            "name": "[parameters('analysisServicesName')]",
+            "sku": {
+                "name": "D1"
+            },
+            "properties": {
+                "asAdministrators": {
+                    "members": [
+                        "[concat('app:',reference(resourceId('Microsoft.Logic/workflows', parameters('logicAppName')), '2019-05-01', 'Full').identity.principalId,'@',subscription().tenantId)]"
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2019-06-01",
+            "location": "[resourceGroup().location]",
+            "name": "[parameters('storageAccountName')]",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Standard_LRS"
+            }
+        },
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2019-05-01",
+            "location": "[resourceGroup().location]",
+            "name": "[parameters('logicAppName')]",
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "actions": {
+                        "HTTP": {
+                            "inputs": {
+                                "body": {
+                                    "CommitMode": "transactional",
+                                    "MaxParallelism": 2,
+                                    "Objects": [
+                                    ],
+                                    "RetryCount": 2,
+                                    "Type": "Full"
+                                },
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "method": "POST",
+                                "uri": "https://northeurope.asazure.windows.net/servers/myserver/models/demo/refreshes"
+                            },
+                            "runAfter": {
+                            },
+                            "type": "Http"
+                        }
+                    },
+                    "contentVersion": "1.0.0.0",
+                    "outputs": {
+                    },
+                    "parameters": {
+                    },
+                    "triggers": {
+                        "manual": {
+                            "inputs": {
+                                "schema": {
+                                }
+                            },
+                            "kind": "Http",
+                            "type": "Request"
+                        }
+                    }
+                }
+            },
+            "identity": {
+                "type": "SystemAssigned"
+            }
+        }
+    ],
+    "outputs": {
+    }
+}
