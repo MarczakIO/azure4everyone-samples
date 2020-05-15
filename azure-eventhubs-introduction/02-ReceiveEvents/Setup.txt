@@ -1,6 +1,5 @@
 dotnet new console
 dotnet add package Azure.Messaging.EventHubs
-dotnet add package Azure.Messaging.EventHubs.Consumer
 dotnet add package Azure.Messaging.EventHubs.Processor
 dotnet add package Azure.Storage.Blobs
 dotnet restore
