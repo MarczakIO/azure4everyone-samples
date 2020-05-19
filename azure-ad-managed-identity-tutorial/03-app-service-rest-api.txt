@@ -1,0 +1,3 @@
+dotnet new webapi
+dotnet add package Microsoft.Azure.Services.AppAuthentication
+dotnet add package Microsoft.Azure.KeyVault

@@ -1,0 +1,8 @@
+url:
+https://<kv_name>.vault.azure.net/secrets/<secret_name>/<version_optional>
+
+version:
+?api-version=7.0
+
+audience:
+https://vault.azure.net
