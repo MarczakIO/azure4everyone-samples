@@ -1,0 +1,9 @@
+{
+    "title": "@{activity('Execute Pipeline1').output.pipelineName} SUCCEEDED!",
+    "message": "Pipeline run finished successfully!",
+    "color": "Green",
+    "dataFactoryName": "@{pipeline().DataFactory}",
+    "pipelineName": "@{activity('Execute Pipeline1').output.pipelineName}",
+    "pipelineRunId": "@{activity('Execute Pipeline1').output.pipelineRunId}",
+    "time": "@{utcnow()}"
+}

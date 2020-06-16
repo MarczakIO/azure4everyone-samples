@@ -1,0 +1,9 @@
+{
+    "title": "@{activity('Execute Pipeline1').output.pipelineName} FAILED!",
+    "message": "Error: @{activity('Execute Pipeline1').error.message}",
+    "color": "Red",
+    "dataFactoryName": "@{pipeline().DataFactory}",
+    "pipelineName": "@{activity('Execute Pipeline1').output.pipelineName}",
+    "pipelineRunId": "@{activity('Execute Pipeline1').output.pipelineRunId}",
+    "time": "@{utcnow()}"
+    }

@@ -1,0 +1,23 @@
+dotnet --version
+dotnet new webapi
+dotnet add package NSwag.AspNetCore
+
+
+
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllers();
+    ...
+    services.AddSwaggerDocument();
+}
+
+public void Configure(IApplicationBuilder app)
+{
+    app.UseStaticFiles();
+
+    // Register the Swagger generator and the Swagger UI middlewares
+    app.UseOpenApi();
+    app.UseSwaggerUi3();
+
+    app.UseMvc();
+}
