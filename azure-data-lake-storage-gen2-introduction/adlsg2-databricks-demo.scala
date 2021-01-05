@@ -26,4 +26,4 @@ val df = spark.read.option("header", "true").csv("/mnt/data/demo/movies.csv")
 
 val selected = df.select("movieId", "title")
 
-selected.save.csv("/mnt/data/demo/movies-2.csv")
+selected.write.csv("/mnt/data/demo/movies-2.csv")
