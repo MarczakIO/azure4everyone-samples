@@ -22,6 +22,7 @@ do
     -n vm-eu-0$NUM \
     -g $group \
     -l northeurope \
+    --size Standard_B1s \
     --image Win2019Datacenter \
     --admin-username $username \
     --admin-password $password \
